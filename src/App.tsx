@@ -320,9 +320,9 @@ class App extends React.Component<unknown, IAppState> {
       const flatTxns = txnsToSign.reduce((acc, val) => acc.concat(val), []);
 
       const walletTxns: IWalletTransaction[] = flatTxns.map(
-        ({ txn, shouldSign, authAddr, message }) => ({
+        ({ txn, signers, authAddr, message }) => ({
           txn: Buffer.from(algosdk.encodeUnsignedTransaction(txn)).toString("base64"),
-          signers: shouldSign ? undefined : [], // TODO: put auth addr in signers array
+          signers, // TODO: put auth addr in signers array
           authAddr,
           message,
         }),
@@ -352,14 +352,14 @@ class App extends React.Component<unknown, IAppState> {
         const toSign = txnsToSign[group][groupIndex];
 
         if (r == null) {
-          if (!toSign.shouldSign) {
+          if (toSign.signers !== undefined && toSign.signers?.length < 1) {
             signedPartialTxns[group].push(null);
             return;
           }
           throw new Error(`Transaction at index ${i}: was not signed when it should have been`);
         }
 
-        if (!toSign.shouldSign) {
+        if (toSign.signers !== undefined && toSign.signers?.length < 1) {
           throw new Error(`Transaction at index ${i} was signed when it should not have been`);
         }
 
