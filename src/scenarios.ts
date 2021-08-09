@@ -825,8 +825,8 @@ const multipleNonAtomicTxnsForOnlyAssets: Scenario = async (
   });
 
   const txn3 = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
-    from: testAccounts[0].addr,
-    to: address,
+    from: address,
+    to: testAccounts[0].addr,
     amount: 30000,
     assetIndex: transferAssetIndex,
     note: new Uint8Array(Buffer.from("example note value")),
@@ -837,7 +837,7 @@ const multipleNonAtomicTxnsForOnlyAssets: Scenario = async (
   // not necessary to do this, but let's test it works
   algosdk.assignGroupID(group1.map(toSign => toSign.txn));
 
-  const group2 = [{ txn: txn2 }];
+  const group2 = [{ txn: txn2, singers: [] }];
 
   const group3 = [{ txn: txn3, message: "This is a transaction message" }];
 
@@ -884,7 +884,7 @@ const multipleNonAtomicTxnsMixed: Scenario = async (
 
   const group2 = [{ txn: txn2 }];
 
-  const group3 = [{ txn: txn3 }];
+  const group3 = [{ txn: txn3, singers: [] }];
 
   return [group1, group2, group3];
 };
@@ -1085,8 +1085,8 @@ const multipleAtomicGroupsForOnlyAssets: Scenario = async (
   });
 
   const txn4 = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
-    from: testAccounts[0].addr,
-    to: address,
+    from: address,
+    to: testAccounts[0].addr,
     amount: 2000,
     assetIndex: transferAssetIndex,
     note: new Uint8Array(Buffer.from("example note value")),
@@ -1095,7 +1095,7 @@ const multipleAtomicGroupsForOnlyAssets: Scenario = async (
 
   const group1 = [
     { txn: txn1 },
-    { txn: txn2 },
+    { txn: txn2, signers: [] },
   ];
   algosdk.assignGroupID(group1.map(toSign => toSign.txn));
 
@@ -1149,7 +1149,7 @@ const multipleAtomicGroupsWithInvalidAsset: Scenario = async (
 
   const group1 = [
     { txn: txn1 },
-    { txn: txn2 },
+    { txn: txn2, signers: [] },
   ];
   algosdk.assignGroupID(group1.map(toSign => toSign.txn));
 
@@ -1206,7 +1206,7 @@ const multipleAtomicGroupsMixed1: Scenario = async (
 
   const group1 = [
     { txn: txn1 },
-    { txn: txn2 },
+    { txn: txn2, signers: [] },
   ];
   algosdk.assignGroupID(group1.map(toSign => toSign.txn));
 
@@ -1236,16 +1236,16 @@ const multipleAtomicGroupsMixed2: Scenario = async (
   });
 
   const txn2 = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
-    from: address,
-    to: testAccounts[0].addr,
+    from: testAccounts[0].addr,
+    to: address,
     amount: 100002,
     note: new Uint8Array(Buffer.from("atomic group 1 txn 2")),
     suggestedParams,
   });
 
   const txn3 = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
-    from: testAccounts[0].addr,
-    to: address,
+    from: address,
+    to: testAccounts[0].addr,
     amount: 2000,
     assetIndex: transferAssetIndex,
     note: new Uint8Array(Buffer.from("example note value")),
@@ -1262,7 +1262,7 @@ const multipleAtomicGroupsMixed2: Scenario = async (
   });
 
   const group1 = [
-    { txn: txn1 },
+    { txn: txn1, signers: [] },
     { txn: txn2 },
   ];
   algosdk.assignGroupID(group1.map(toSign => toSign.txn));
@@ -1292,7 +1292,7 @@ const multipleAtomicGroupSignOnly2: Scenario = async (
 
   const txn2 = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
     from: address,
-    to: testAccounts[0].addr,
+    to: testAccounts[1].addr,
     amount: 100002,
     note: new Uint8Array(Buffer.from("atomic group 2 txn 2")),
     suggestedParams,
@@ -1308,7 +1308,7 @@ const multipleAtomicGroupSignOnly2: Scenario = async (
 
   const txn4 = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
     from: address,
-    to: testAccounts[0].addr,
+    to: testAccounts[1].addr,
     amount: 100004,
     note: new Uint8Array(Buffer.from("txn 4")),
     suggestedParams,
@@ -1345,7 +1345,7 @@ const atomicGroupAndNonAtomicTxnsSignOnly2: Scenario = async (
 
   const txn2 = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
     from: address,
-    to: testAccounts[0].addr,
+    to: testAccounts[1].addr,
     amount: 100002,
     note: new Uint8Array(Buffer.from("atomic group 2 txn 2")),
     suggestedParams,
@@ -1353,7 +1353,7 @@ const atomicGroupAndNonAtomicTxnsSignOnly2: Scenario = async (
 
   const txn3 = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
     from: address,
-    to: testAccounts[0].addr,
+    to: testAccounts[1].addr,
     amount: 100003,
     note: new Uint8Array(Buffer.from("txn 3")),
     suggestedParams,
@@ -1361,7 +1361,7 @@ const atomicGroupAndNonAtomicTxnsSignOnly2: Scenario = async (
 
   const txn4 = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
     from: address,
-    to: testAccounts[0].addr,
+    to: testAccounts[1].addr,
     amount: 100004,
     note: new Uint8Array(Buffer.from("txn 4")),
     suggestedParams,
