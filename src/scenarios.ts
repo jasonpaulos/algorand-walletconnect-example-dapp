@@ -311,6 +311,26 @@ const singleAppCall: Scenario = async (
   return [txnsToSign];
 };
 
+const singleAppCallNoArgs: Scenario = async (
+  chain: ChainType,
+  address: string,
+): Promise<ScenarioReturnType> => {
+  const suggestedParams = await apiGetTxnParams(chain);
+
+  const appIndex = getAppIndex(chain);
+
+  const txn = algosdk.makeApplicationNoOpTxnFromObject({
+    from: address,
+    appIndex,
+    note: new Uint8Array(Buffer.from("example note value")),
+    appArgs: [],
+    suggestedParams,
+  });
+
+  const txnsToSign = [{ txn }];
+  return [txnsToSign];
+};
+
 const singleAppCallWithRekey: Scenario = async (
   chain: ChainType,
   address: string,
@@ -1677,5 +1697,9 @@ export const scenarios: Array<{ name: string; scenario: Scenario }> = [
   {
     name: "42. Sign single app delete txn",
     scenario: singleAppDelete,
+  },
+  {
+    name: "43. Sign single app call with no args",
+    scenario: singleAppCallNoArgs,
   },
 ];
