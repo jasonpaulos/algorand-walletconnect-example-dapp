@@ -1,6 +1,6 @@
 {
   "name": "walletconnect-example-dapp",
-  "version": "1.6.1",
+  "version": "1.6.5",
   "private": true,
   "homepage": "https://jasonpaulos.github.io/algorand-walletconnect-example-dapp",
   "keywords": [
@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@json-rpc-tools/utils": "^1.7.5",
-    "@walletconnect/client": "^1.6.1",
+    "@walletconnect/client": "^1.6.5",
     "algorand-walletconnect-qrcode-modal": "^1.6.1",
     "algosdk": "^1.11.1",
     "blockies-ts": "^1.0.0",
