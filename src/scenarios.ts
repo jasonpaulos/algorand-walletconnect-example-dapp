@@ -409,6 +409,33 @@ const singleAppCreate: Scenario = async (
     numGlobalByteSlices: 2,
     numLocalInts: 3,
     numLocalByteSlices: 4,
+    onComplete: algosdk.OnApplicationComplete.NoOpOC,
+    note: new Uint8Array(Buffer.from("example note value")),
+    appArgs: [Uint8Array.from([0]), Uint8Array.from([0, 1])],
+    suggestedParams,
+  });
+
+  const txnsToSign = [{ txn }];
+  return [txnsToSign];
+};
+
+const singleAppCreateExtraPage: Scenario = async (
+  chain: ChainType,
+  address: string,
+): Promise<ScenarioReturnType> => {
+  const suggestedParams = await apiGetTxnParams(chain);
+
+  const approvalProgram = Uint8Array.from([4, 129, 1, 67]);
+  const clearProgram = Uint8Array.from([3, 129, 1, 67]);
+
+  const txn = algosdk.makeApplicationCreateTxnFromObject({
+    from: address,
+    approvalProgram,
+    clearProgram,
+    numGlobalInts: 1,
+    numGlobalByteSlices: 2,
+    numLocalInts: 3,
+    numLocalByteSlices: 4,
     extraPages: 1,
     onComplete: algosdk.OnApplicationComplete.NoOpOC,
     note: new Uint8Array(Buffer.from("example note value")),
@@ -1701,5 +1728,9 @@ export const scenarios: Array<{ name: string; scenario: Scenario }> = [
   {
     name: "43. Sign single app call with no args",
     scenario: singleAppCallNoArgs,
+  },
+  {
+    name: "44. Sign single app create txn with extra page (not working with ledger app v1.2.15)",
+    scenario: singleAppCreateExtraPage,
   },
 ];
