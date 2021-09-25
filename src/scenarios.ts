@@ -1556,6 +1556,142 @@ const txnWithLargeNote: Scenario = async (
   return [txnsToSign];
 };
 
+const assetCreateTxnMaxInfoAndRekey: Scenario = async (
+  chain: ChainType,
+  address: string,
+): Promise<ScenarioReturnType> => {
+  const suggestedParams = await apiGetTxnParams(chain);
+
+  const txn = algosdk.makeAssetCreateTxnWithSuggestedParamsFromObject({
+    from: address,
+    decimals: 2,
+    defaultFrozen: false,
+    total: BigInt("0xffffffffffffffff"),
+    assetName: "Example asset",
+    unitName: "EX",
+    assetURL: "https://example.com",
+    assetMetadataHash: new Uint8Array(
+      Buffer.from("59fc007607ccc82d96f016857aaa697c545002d18045e49324696f12b7be8f45", "hex"),
+    ),
+    manager: address,
+    reserve: testAccounts[0].addr,
+    clawback: testAccounts[1].addr,
+    freeze: testAccounts[2].addr,
+    note: new Uint8Array(Buffer.from("example note value")),
+    rekeyTo: testAccounts[1].addr,
+    suggestedParams,
+  });
+
+  const txnsToSign = [{ txn, message: "This is a transaction message" }];
+  return [txnsToSign];
+};
+
+const assetCreateTxnMinInfo: Scenario = async (
+  chain: ChainType,
+  address: string,
+): Promise<ScenarioReturnType> => {
+  const suggestedParams = await apiGetTxnParams(chain);
+
+  const txn = algosdk.makeAssetCreateTxnWithSuggestedParamsFromObject({
+    from: address,
+    decimals: 0,
+    defaultFrozen: false,
+    total: 1,
+    suggestedParams,
+  });
+
+  const txnsToSign = [{ txn, message: "This is a transaction message" }];
+  return [txnsToSign];
+};
+
+const assetReconfigTxnResetAll: Scenario = async (
+  chain: ChainType,
+  address: string,
+): Promise<ScenarioReturnType> => {
+  const suggestedParams = await apiGetTxnParams(chain);
+
+  const txn = algosdk.makeAssetConfigTxnWithSuggestedParamsFromObject({
+    from: address,
+    assetIndex: getAssetIndex(chain, AssetTransactionType.Transfer),
+    clawback: address,
+    freeze: testAccounts[0].addr,
+    manager: testAccounts[1].addr,
+    reserve: testAccounts[2].addr,
+    strictEmptyAddressChecking: true,
+    note: new Uint8Array(Buffer.from("example note value")),
+    suggestedParams,
+  });
+
+  const txnsToSign = [{ txn, message: "This is a transaction message" }];
+  return [txnsToSign];
+};
+
+const assetReconfigTxnClearAll: Scenario = async (
+  chain: ChainType,
+  address: string,
+): Promise<ScenarioReturnType> => {
+  const suggestedParams = await apiGetTxnParams(chain);
+
+  const txn = algosdk.makeAssetConfigTxnWithSuggestedParamsFromObject({
+    from: address,
+    assetIndex: getAssetIndex(chain, AssetTransactionType.Transfer),
+    strictEmptyAddressChecking: false,
+    note: new Uint8Array(Buffer.from("example note value")),
+    suggestedParams,
+  });
+
+  const txnsToSign = [{ txn, message: "This is a transaction message" }];
+  return [txnsToSign];
+};
+
+const assetDeleteTxn: Scenario = async (
+  chain: ChainType,
+  address: string,
+): Promise<ScenarioReturnType> => {
+  const suggestedParams = await apiGetTxnParams(chain);
+
+  const txn = algosdk.makeAssetDestroyTxnWithSuggestedParamsFromObject({
+    from: address,
+    assetIndex: getAssetIndex(chain, AssetTransactionType.Transfer),
+    note: new Uint8Array(Buffer.from("example note value")),
+    suggestedParams,
+  });
+
+  const txnsToSign = [{ txn, message: "This is a transaction message" }];
+  return [txnsToSign];
+};
+
+const zeroFeeTxnGroup: Scenario = async (
+  chain: ChainType,
+  address: string,
+): Promise<ScenarioReturnType> => {
+  const suggestedParams = await apiGetTxnParams(chain);
+
+  const txn1 = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+    from: testAccounts[0].addr,
+    to: address,
+    amount: 100001,
+    note: new Uint8Array(Buffer.from("txn with 0 fee")),
+    suggestedParams,
+  });
+
+  const txn2 = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+    from: address,
+    to: testAccounts[0].addr,
+    amount: 100001,
+    note: new Uint8Array(Buffer.from("txn with double fee")),
+    suggestedParams,
+  });
+
+  txn2.fee += txn1.fee;
+  txn1.fee = 0;
+
+  const group1 = [{ txn: txn1, signers: [] }, { txn: txn2 }];
+  algosdk.assignGroupID(group1.map(toSign => toSign.txn));
+
+  return [group1];
+};
+
 export const scenarios: Array<{ name: string; scenario: Scenario }> = [
   {
     name: "1. Sign single pay txn",
@@ -1732,5 +1868,29 @@ export const scenarios: Array<{ name: string; scenario: Scenario }> = [
   {
     name: "44. Sign single app create txn with extra page (not working with ledger app v1.2.15)",
     scenario: singleAppCreateExtraPage,
+  },
+  {
+    name: "45. Sign asset create + rekey txn",
+    scenario: assetCreateTxnMaxInfoAndRekey,
+  },
+  {
+    name: "46. Sign asset create txn with minimal info",
+    scenario: assetCreateTxnMinInfo,
+  },
+  {
+    name: "47. Sign asset reconfig txn",
+    scenario: assetReconfigTxnResetAll,
+  },
+  {
+    name: "48. Sign asset reconfig txn clear all",
+    scenario: assetReconfigTxnClearAll,
+  },
+  {
+    name: "49. Sign asset delete txn",
+    scenario: assetDeleteTxn,
+  },
+  {
+    name: "50. Sign txn group with 0 fee",
+    scenario: zeroFeeTxnGroup,
   },
 ];
