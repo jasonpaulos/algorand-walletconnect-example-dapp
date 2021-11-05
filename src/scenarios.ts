@@ -1692,6 +1692,79 @@ const zeroFeeTxnGroup: Scenario = async (
   return [group1];
 };
 
+const maxNumberOfTxns: Scenario = async (
+  chain: ChainType,
+  address: string,
+): Promise<ScenarioReturnType> => {
+  const suggestedParams = await apiGetTxnParams(chain);
+
+  const groups: Array<Array<{ txn: algosdk.Transaction }>> = [];
+
+  const numGroups = 8; // 64 / 16
+  for (let i = 0; i < numGroups; i++) {
+    const group: Array<{ txn: algosdk.Transaction }> = [];
+    for (let j = 0; j < 16; j++) {
+      group.push({
+        txn: algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+          from: address,
+          to: testAccounts[0].addr,
+          amount: 0,
+          note: new Uint8Array(Buffer.from(`No ${i * 16 + j + 1} of 64`)),
+          suggestedParams,
+        }),
+      });
+    }
+
+    algosdk.assignGroupID(group.map(toSign => toSign.txn));
+    groups.push(group);
+  }
+
+  return groups;
+};
+
+const tooManyTxns: Scenario = async (
+  chain: ChainType,
+  address: string,
+): Promise<ScenarioReturnType> => {
+  const suggestedParams = await apiGetTxnParams(chain);
+
+  const groups: Array<Array<{ txn: algosdk.Transaction }>> = [];
+
+  const numGroups = 8; // 64 / 16
+  for (let i = 0; i < numGroups; i++) {
+    const group: Array<{ txn: algosdk.Transaction }> = [];
+    for (let j = 0; j < 16; j++) {
+      group.push({
+        txn: algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+          from: address,
+          to: testAccounts[0].addr,
+          amount: 0,
+          note: new Uint8Array(Buffer.from(`No ${i * 16 + j + 1} of 65`)),
+          suggestedParams,
+        }),
+      });
+    }
+
+    algosdk.assignGroupID(group.map(toSign => toSign.txn));
+    groups.push(group);
+  }
+
+  // one more!
+  groups.push([
+    {
+      txn: algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+        from: address,
+        to: testAccounts[0].addr,
+        amount: 0,
+        note: new Uint8Array(Buffer.from(`No 65 of 65`)),
+        suggestedParams,
+      }),
+    },
+  ]);
+
+  return groups;
+};
+
 export const scenarios: Array<{ name: string; scenario: Scenario }> = [
   {
     name: "1. Sign single pay txn",
@@ -1892,5 +1965,13 @@ export const scenarios: Array<{ name: string; scenario: Scenario }> = [
   {
     name: "50. Sign txn group with 0 fee",
     scenario: zeroFeeTxnGroup,
+  },
+  {
+    name: "51. Sign 64 transactions",
+    scenario: maxNumberOfTxns,
+  },
+  {
+    name: "52. Sign 65 transactions",
+    scenario: tooManyTxns,
   },
 ];
