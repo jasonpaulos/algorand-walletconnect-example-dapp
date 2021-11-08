@@ -1700,7 +1700,7 @@ const maxNumberOfTxns: Scenario = async (
 
   const groups: Array<Array<{ txn: algosdk.Transaction }>> = [];
 
-  const numGroups = 8; // 64 / 16
+  const numGroups = 4; // 64 / 16
   for (let i = 0; i < numGroups; i++) {
     const group: Array<{ txn: algosdk.Transaction }> = [];
     for (let j = 0; j < 16; j++) {
@@ -1730,7 +1730,7 @@ const tooManyTxns: Scenario = async (
 
   const groups: Array<Array<{ txn: algosdk.Transaction }>> = [];
 
-  const numGroups = 8; // 64 / 16
+  const numGroups = 4; // 64 / 16
   for (let i = 0; i < numGroups; i++) {
     const group: Array<{ txn: algosdk.Transaction }> = [];
     for (let j = 0; j < 16; j++) {
