@@ -26,10 +26,10 @@
     "url": "https://github.com/walletconnect/walletconnect-example-dapp/issues"
   },
   "dependencies": {
-    "@json-rpc-tools/utils": "^1.7.5",
-    "@walletconnect/client": "^1.6.5",
-    "algorand-walletconnect-qrcode-modal": "^1.6.1",
-    "algosdk": "^1.11.1",
+    "@json-rpc-tools/utils": "^1.7.6",
+    "@walletconnect/client": "^1.7.4",
+    "algorand-walletconnect-qrcode-modal": "^1.7.4",
+    "algosdk": "^1.13.1",
     "blockies-ts": "^1.0.0",
     "prop-types": "^15.7.2",
     "qr-image": "^3.2.0",
