@@ -6,8 +6,8 @@ export enum ChainType {
   TestNet = "testnet",
 }
 
-const mainNetClient = new algosdk.Algodv2("", "https://algoexplorerapi.io", "");
-const testNetClient = new algosdk.Algodv2("", "https://testnet.algoexplorerapi.io", "");
+const mainNetClient = new algosdk.Algodv2("", "https://mainnet-api.algonode.cloud", "");
+const testNetClient = new algosdk.Algodv2("", "https://testnet-api.algonode.cloud", "");
 
 function clientForChain(chain: ChainType): algosdk.Algodv2 {
   switch (chain) {
