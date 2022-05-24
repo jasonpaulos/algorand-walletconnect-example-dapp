@@ -1,7 +1,7 @@
 self.__precacheManifest = [
   {
-    "revision": "b75b898c245e5b407c0b",
-    "url": "/algorand-walletconnect-example-dapp/static/js/main.b75b898c.chunk.js"
+    "revision": "1654d60ff47cb0a6dc24",
+    "url": "/algorand-walletconnect-example-dapp/static/js/main.1654d60f.chunk.js"
   },
   {
     "revision": "2e7e9b254979d14efc77",
@@ -16,7 +16,7 @@ self.__precacheManifest = [
     "url": "/algorand-walletconnect-example-dapp/static/media/algo.6c6f52b0.svg"
   },
   {
-    "revision": "e108f1f9284dcaedc5052a6474a4e47c",
+    "revision": "dd03c51eb7e8ceace7b6eb933ee3109d",
     "url": "/algorand-walletconnect-example-dapp/index.html"
   }
 ];
