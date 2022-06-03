@@ -6,6 +6,17 @@ export enum ChainType {
   TestNet = "testnet",
 }
 
+export function getChainId(chain: ChainType): number {
+  switch (chain) {
+    case ChainType.MainNet:
+      return 416001;
+    case ChainType.TestNet:
+      return 416002;
+    default:
+      throw new Error(`Unknown chain type: ${chain}`);
+  }
+}
+
 const mainNetClient = new algosdk.Algodv2("", "https://mainnet-api.algonode.cloud", "");
 const testNetClient = new algosdk.Algodv2("", "https://testnet-api.algonode.cloud", "");
 

@@ -12,7 +12,7 @@ import Modal from "./components/Modal";
 import Header from "./components/Header";
 import Loader from "./components/Loader";
 import { fonts } from "./styles";
-import { apiGetAccountAssets, apiSubmitTransactions, ChainType } from "./helpers/api";
+import { getChainId, apiGetAccountAssets, apiSubmitTransactions, ChainType } from "./helpers/api";
 import { IAssetData, IWalletTransaction, SignTxnParams } from "./helpers/types";
 import AccountAssets from "./components/AccountAssets";
 import { Scenario, scenarios, signTxnWithTestAccount } from "./scenarios";
@@ -186,7 +186,7 @@ class App extends React.Component<unknown, IAppState> {
     // check if already connected
     if (!connector.connected) {
       // create new session
-      await connector.createSession();
+      await connector.createSession({ chainId: getChainId(this.state.chain) });
     }
 
     // subscribe to events
@@ -253,6 +253,15 @@ class App extends React.Component<unknown, IAppState> {
   };
 
   public chainUpdate = (newChain: ChainType) => {
+    const { connector } = this.state;
+
+    if (connector) {
+      connector.updateSession({
+        chainId: getChainId(newChain),
+        accounts: this.state.accounts,
+      });
+    }
+
     this.setState({ chain: newChain }, this.getAccountAssets);
   };
 
