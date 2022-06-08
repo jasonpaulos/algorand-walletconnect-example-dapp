@@ -1,12 +1,12 @@
 {
-  "main.js": "/algorand-walletconnect-example-dapp/static/js/main.1654d60f.chunk.js",
-  "main.js.map": "/algorand-walletconnect-example-dapp/static/js/main.1654d60f.chunk.js.map",
-  "static/js/1.2e7e9b25.chunk.js": "/algorand-walletconnect-example-dapp/static/js/1.2e7e9b25.chunk.js",
-  "static/js/1.2e7e9b25.chunk.js.map": "/algorand-walletconnect-example-dapp/static/js/1.2e7e9b25.chunk.js.map",
+  "main.js": "/algorand-walletconnect-example-dapp/static/js/main.3b6a2827.chunk.js",
+  "main.js.map": "/algorand-walletconnect-example-dapp/static/js/main.3b6a2827.chunk.js.map",
+  "static/js/1.ca5f2268.chunk.js": "/algorand-walletconnect-example-dapp/static/js/1.ca5f2268.chunk.js",
+  "static/js/1.ca5f2268.chunk.js.map": "/algorand-walletconnect-example-dapp/static/js/1.ca5f2268.chunk.js.map",
   "runtime~main.js": "/algorand-walletconnect-example-dapp/static/js/runtime~main.38ff1b95.js",
   "runtime~main.js.map": "/algorand-walletconnect-example-dapp/static/js/runtime~main.38ff1b95.js.map",
   "static/media/algo.svg": "/algorand-walletconnect-example-dapp/static/media/algo.6c6f52b0.svg",
   "index.html": "/algorand-walletconnect-example-dapp/index.html",
-  "precache-manifest.a9bd3cd9de80d9a748cc563795fbf6fe.js": "/algorand-walletconnect-example-dapp/precache-manifest.a9bd3cd9de80d9a748cc563795fbf6fe.js",
+  "precache-manifest.83d10cbbfd6196d2dad290994da47db6.js": "/algorand-walletconnect-example-dapp/precache-manifest.83d10cbbfd6196d2dad290994da47db6.js",
   "service-worker.js": "/algorand-walletconnect-example-dapp/service-worker.js"
 }

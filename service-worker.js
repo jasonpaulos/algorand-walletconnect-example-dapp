@@ -15,7 +15,7 @@ importScripts("/algorand-walletconnect-example-dapp/workbox-v3.6.3/workbox-sw.js
 workbox.setConfig({modulePathPrefix: "/algorand-walletconnect-example-dapp/workbox-v3.6.3"});
 
 importScripts(
-  "/algorand-walletconnect-example-dapp/precache-manifest.a9bd3cd9de80d9a748cc563795fbf6fe.js"
+  "/algorand-walletconnect-example-dapp/precache-manifest.83d10cbbfd6196d2dad290994da47db6.js"
 );
 
 workbox.clientsClaim();
