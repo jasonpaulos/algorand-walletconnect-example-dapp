@@ -19,6 +19,11 @@ jobs:
         with:
           node-version: 14
 
+      - name: Print versions
+        run: |
+          node --version
+          npm --version
+
       - name: Install and Build
         run: |
           npm ci
